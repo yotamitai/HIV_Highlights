@@ -1,8 +1,8 @@
 import os
 import pandas as pd
 import xxhash as xxhash
-from get_episodes import get_episodes, states_to_trajectories
-from highlights.highlights_state_selection import compute_states_importance, highlights
+from get_episodes import get_episodes
+from highlights.highlights_state_selection import compute_states_importance
 
 
 def create_highlights(args):
@@ -32,10 +32,10 @@ def create_highlights(args):
     highlights_df = q_values_df
     state_importance_dict = dict(zip(highlights_df["state"], highlights_df["importance"]))
 
-    """get highlights"""
+    """get highlight trajectories"""
     # if args.trajectory_importance == "single_state":
     #     """highlights importance by single state importance"""
-    #     summary_states = highlights(highlights_df, episode, args.summary_traj_budget, args.context_length,
+    #     summary_states = highlights(highlights_df, [episode], args.summary_traj_budget, args.context_length,
     #                                 args.minimum_gap)
     #     summary_trajectories = states_to_trajectories(summary_states, state_importance_dict)
     # else:
@@ -44,7 +44,7 @@ def create_highlights(args):
     #                                                       args.context_length, args.load_traces,
     #                                                       args.trajectories_file, state_importance_dict,
     #                                                       args.similarity_limit, args.summary_traj_budget)
-    # if args.verbose: print('HIGHLIGHTS obtained')
+    if args.verbose: print('HIGHLIGHTS obtained')
 
     """make video"""
     # dir_name = os.path.join(args.video_dir, args.algo, args.state_importance +

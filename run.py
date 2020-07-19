@@ -1,5 +1,7 @@
 import argparse
 import pickle
+
+from fittedQiter_local import FittedQIteration
 from get_highlights import create_highlights
 
 
@@ -9,7 +11,13 @@ def pred_2_qval(predictions):
     return [x / denominator for x in predictions]
 
 
+def get_agents(params):
+    qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins], gamma=0.98,
+                             ins=params.ins)
+    qiter.updatePlan()
+
 def main(params):
+    get_agents(params)
     create_highlights(params)
 
 
@@ -32,7 +40,9 @@ if __name__ == '__main__':
     args.context_length = 2 * args.summary_traj_budget
     args.minimum_gap = 5
 
-    main(args)
+    get_agents(args)
+
+    # main(args)
     print("Done")
 
 

@@ -1,6 +1,5 @@
-
 import joblib
-from hiv_fittedQ.fittedQiter import FittedQIteration
+from fittedQiter_local import FittedQIteration
 from utils import Trajectory
 
 
@@ -8,7 +7,14 @@ def get_episodes(params):
     """Load Environment & Agent"""
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins], gamma=0.98,
                              ins=params.ins)
+
+
+
+    """actor"""
     qiter.tree = joblib.load('hiv_fittedQ/extra_tree_gamma_ins20.pkl')
+    """critic"""
+    qiter.critic = joblib.load('hiv_fittedQ/extra_tree_gamma_ins100.pkl')
+
     # for e in range(params.n_episodes):
     """Run Episode"""
     ep, ac, episode = qiter.run_episode(eps=params.epsilon_greedy, track=True, episode_len=params.episode_length)
