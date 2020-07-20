@@ -102,6 +102,7 @@ class FittedQIteration():
 
     def updatePlan(self, name):
         for k in range(self.K):
+            print(k)
             self.tmp = []
             for i in range(self.num_patients): self.run_episode(eps=self.eps)
             if k == 0:
@@ -110,14 +111,13 @@ class FittedQIteration():
                 self.Q = np.zeros(self.samples.shape[0])
                 self.tree.fit(self.samples[:, :self.num_states + 1], self.Q)
             else:
-                self.samples = np.vstack([self.samples, np.vstack(self.tmp)]);
-                print(self.samples.shape);
+                self.samples = np.vstack([self.samples, np.vstack(self.tmp)])
+                print(self.samples.shape)
             for t in range(self.iterations):
                 Qprime = self.predictQ(self.samples[:, -self.num_states:])
                 self.Q = self.samples[:, self.num_states + 1] + Qprime * self.gamma
                 self.tree.fit(self.samples[:, :self.num_states + 1], self.Q)
             joblib.dump(self.tree, 'agents/extra_tree_gamma_ins' + str(self.ins) + name +'.pkl')
-            print(k)
             self.run_episode(eps=0.0, track=True)
             with open('agents/hiv_exp_buffer_ins' + str(self.ins) + name, 'wb') as f:
                 pickle.dump(self.samples, f)
