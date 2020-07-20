@@ -100,7 +100,7 @@ class FittedQIteration():
 
             return action, prediction  #, conflict
 
-    def updatePlan(self):
+    def updatePlan(self, name):
         for k in range(self.K):
             self.tmp = []
             for i in range(self.num_patients): self.run_episode(eps=self.eps)
@@ -116,8 +116,8 @@ class FittedQIteration():
                 Qprime = self.predictQ(self.samples[:, -self.num_states:])
                 self.Q = self.samples[:, self.num_states + 1] + Qprime * self.gamma
                 self.tree.fit(self.samples[:, :self.num_states + 1], self.Q)
-            joblib.dump(self.tree, 'agents/extra_tree_gamma_ins' + str(self.ins) + '.pkl')
+            joblib.dump(self.tree, 'agents/extra_tree_gamma_ins' + str(self.ins) + name +'.pkl')
             print(k)
             self.run_episode(eps=0.0, track=True)
-            with open('agents/hiv_exp_buffer_ins' + str(self.ins), 'wb') as f:
+            with open('agents/hiv_exp_buffer_ins' + str(self.ins) + name, 'wb') as f:
                 pickle.dump(self.samples, f)
