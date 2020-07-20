@@ -103,7 +103,7 @@ class FittedQIteration():
     def updatePlan(self):
         for k in range(self.K):
             self.tmp = []
-            for i in range(self.num_patients): self.run_episode(eps=self.e)
+            for i in range(self.num_patients): self.run_episode(eps=self.eps)
             if k == 0:
                 self.samples = np.vstack(self.tmp)
                 self.eps = 0.15
