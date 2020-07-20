@@ -29,7 +29,7 @@ class FittedQIteration():
         self.tree = ExtraTreesRegressor(n_estimators=50, min_samples_split=2, random_state=66)
         self.num_actions = 4
         self.num_states = 6
-        self.num_patients = 30
+        self.num_patients = num_patients
         self.eps = 1.0
         self.samples = None
         self.preset_params = preset_params
@@ -103,7 +103,7 @@ class FittedQIteration():
     def updatePlan(self):
         for k in range(self.K):
             self.tmp = []
-            for i in range(self.num_patients): self.run_episode(eps=self.eps)
+            for i in range(self.num_patients): self.run_episode(eps=self.e)
             if k == 0:
                 self.samples = np.vstack(self.tmp)
                 self.eps = 0.15

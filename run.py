@@ -12,9 +12,16 @@ def pred_2_qval(predictions):
 
 
 def get_agents(params):
-    qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins], gamma=0.98,
-                             ins=params.ins)
+    print("Training Agent")
+    """agent 1"""
+    qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
+                             , gamma=0.98, ins=params.ins, K=10, num_patients=30)
     qiter.updatePlan()
+    """agent 2"""
+    qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
+                             , gamma=0.98, ins=params.ins, K=5, num_patients=15)
+    qiter.updatePlan()
+
 
 def main(params):
     get_agents(params)
@@ -44,8 +51,6 @@ if __name__ == '__main__':
 
     # main(args)
     print("Done")
-
-
 
     # with open('buffer', 'wb') as f:
     #     pickle.dump(ep, f)
