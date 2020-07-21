@@ -13,13 +13,11 @@ def pred_2_qval(predictions):
 
 def get_agents(params):
     """train agents"""
-
     """agent 1"""
     print("Training Agent 1")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
                              , gamma=0.98, ins=params.ins, K=10, num_patients=30)
     qiter.updatePlan("_10k_30patients")
-
     """agent 2"""
     print("Training Agent 2")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
