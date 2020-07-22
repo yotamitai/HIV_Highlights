@@ -15,7 +15,8 @@ def train_agents(params):
     """train agents"""
     print(f"Training Agent with ins = {params.ins}, K = {params.K}, num_patients = {params.num_patients}")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
-                             , gamma=0.98, ins=params.ins, K=params.K, num_patients=params.num_patients)
+                             , gamma=0.98, ins=params.ins, K=params.K, num_patients=params.num_patients,
+                             train=True)
     qiter.updatePlan(f"_K{params.K}_patients{params.num_patients}")
 
 

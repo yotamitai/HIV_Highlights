@@ -13,7 +13,7 @@ class FittedQIteration():
     being passed to the regressors, including trivial, fourier, tile coding, and radial basis functions."""
 
     def __init__(self, gamma=0.98, iterations=400, K=10, num_patients=30, preset_params=None, ins=None, \
-                 perturb_rate=0.0):
+                 perturb_rate=0.0, train=False):
         """Inits the Fitted Q-Iteration planner with discount factor, instantiated model learner, and additional parameters.
 
         Args:
@@ -34,6 +34,7 @@ class FittedQIteration():
         self.samples = None
         self.preset_params = preset_params
         self.ins = ins
+        self.train = train
 
     def encode_action(self, action):
         a = np.zeros(self.num_actions)
@@ -87,16 +88,18 @@ class FittedQIteration():
         The current greedy action under the planned policy for the given state. If no plan has been formed,
         return a random action.
         """
+        if np.random.rand(1) < eps:
+            return np.random.randint(0, self.num_actions), "rand"
+        else:
+            prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
+            action = prediction.argmax()
+            if not self.train:
+                """critic"""
+                critic_prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
+                critic_action = critic_prediction.argmax()
+                conflict = (action != critic_action)
 
-        prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
-        action = prediction.argmax()
-
-        """critic"""
-        critic_prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
-        critic_action = critic_prediction.argmax()
-        conflict = (action != critic_action)
-
-        return action, prediction  #, conflict
+            return action, prediction  #, conflict
 
     def updatePlan(self, name):
         for k in range(self.K):
