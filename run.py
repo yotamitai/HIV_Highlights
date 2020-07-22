@@ -16,13 +16,8 @@ def train_agents(params):
     """agent 1"""
     print("Training Agent 1")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
-                             , gamma=0.98, ins=params.ins, K=10, num_patients=30)
-    qiter.updatePlan("_10k_30patients")
-    """agent 2"""
-    print("Training Agent 2")
-    qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
                              , gamma=0.98, ins=params.ins, K=5, num_patients=15)
-    qiter.updatePlan("_5k_15patients")
+    qiter.updatePlan("_10k_30patients")
 
 
 def main(params):
