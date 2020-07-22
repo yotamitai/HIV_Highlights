@@ -87,18 +87,16 @@ class FittedQIteration():
         The current greedy action under the planned policy for the given state. If no plan has been formed,
         return a random action.
         """
-        if np.random.rand(1) < eps:
-            return np.random.randint(0, self.num_actions), "rand"
-        else:
-            prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
-            action = prediction.argmax()
 
-            """critic"""
-            # critic_prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
-            # critic_action = critic_prediction.argmax()
-            # conflict = (action != critic_action)
+        prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
+        action = prediction.argmax()
 
-            return action, prediction  #, conflict
+        """critic"""
+        critic_prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
+        critic_action = critic_prediction.argmax()
+        conflict = (action != critic_action)
+
+        return action, prediction  #, conflict
 
     def updatePlan(self, name):
         for k in range(self.K):

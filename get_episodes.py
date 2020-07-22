@@ -8,9 +8,9 @@ def get_episodes(params):
                              ins=params.ins)
 
     """agent 1"""
-    qiter.tree = joblib.load(params.agent1_path) #'hiv_fittedQ/extra_tree_gamma_ins20.pkl')
+    qiter.tree = joblib.load(params.agent1_path)
     """agent 2"""
-    qiter.critic = joblib.load(params.agent2_path) # 'hiv_fittedQ/extra_tree_gamma_ins100.pkl')
+    qiter.critic = joblib.load(params.agent2_path)
 
 
     """Run Episode"""

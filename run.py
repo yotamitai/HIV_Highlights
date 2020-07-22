@@ -16,7 +16,7 @@ def train_agents(params):
     print(f"Training Agent with ins = {params.ins}, K = {params.K}, num_patients = {params.num_patients}")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
                              , gamma=0.98, ins=params.ins, K=params.K, num_patients=params.num_patients)
-    qiter.updatePlan("_10k_30patients")
+    qiter.updatePlan(f"_K{params.K}_patients{params.num_patients}")
 
 
 def main(params):
@@ -26,10 +26,11 @@ def main(params):
 if __name__ == '__main__':
     """Paramteres"""
     parser = argparse.ArgumentParser()
+    parser.add_argument('--train', help='Training an agent', type=bool, default=False)
     args = parser.parse_args()
 
-    args.agent1 = 'hiv_fittedQ/extra_tree_gamma_ins20.pkl'
-    args.agent2 = 'hiv_fittedQ/extra_tree_gamma_ins20.pkl'
+    args.agent1_path = 'agents/extra_tree_gamma_ins20_K10_patients30.pkl'
+    args.agent2_path = 'agents/extra_tree_gamma_ins100.pkl'
     hiv_params = 'hiv_simulator/hiv_preset_hidden_params'
     with open(hiv_params, 'rb') as f:
         args.preset_hidden_params = pickle.load(f, encoding='latin1')
@@ -47,7 +48,8 @@ if __name__ == '__main__':
     args.context_length = 2 * args.summary_traj_budget
     args.minimum_gap = 5
 
-    train_agents(args)
-
-    # main(args)
+    if args.train:
+        train_agents(args)
+    else:
+        main(args)
     print("Done")
