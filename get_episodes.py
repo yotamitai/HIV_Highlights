@@ -9,7 +9,6 @@ def get_episodes(params):
                              ins=params.ins)
 
 
-
     """actor"""
     qiter.tree = joblib.load('hiv_fittedQ/extra_tree_gamma_ins20.pkl')
     """critic"""

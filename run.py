@@ -11,7 +11,7 @@ def pred_2_qval(predictions):
     return [x / denominator for x in predictions]
 
 
-def get_agents(params):
+def train_agents(params):
     """train agents"""
     """agent 1"""
     print("Training Agent 1")
@@ -26,7 +26,6 @@ def get_agents(params):
 
 
 def main(params):
-    get_agents(params)
     create_highlights(params)
 
 
@@ -49,9 +48,9 @@ if __name__ == '__main__':
     args.context_length = 2 * args.summary_traj_budget
     args.minimum_gap = 5
 
-    get_agents(args)
+    # train_agents(args)
 
-    # main(args)
+    main(args)
     print("Done")
 
     # with open('buffer', 'wb') as f:

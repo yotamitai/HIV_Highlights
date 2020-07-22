@@ -6,13 +6,10 @@ from highlights.highlights_state_selection import compute_states_importance
 
 
 def create_highlights(args):
-    """ """
+    """ create highlights"""
 
     """Load/Get Traces"""
-    # if args.load_traces:
-    #     traces, states = load_traces(args)
-    # else:
-    #     traces, states = get_episodes(args)
+
     episode = get_episodes(args)
 
     """Predictions to q_values"""
