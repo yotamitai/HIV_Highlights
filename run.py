@@ -13,10 +13,9 @@ def pred_2_qval(predictions):
 
 def train_agents(params):
     """train agents"""
-    """agent 1"""
-    print("Training Agent 1")
+    print(f"Training Agent with ins = {params.ins}, K = {params.K}, num_patients = {params.num_patients}")
     qiter = FittedQIteration(perturb_rate=0.03, preset_params=params.preset_hidden_params[params.ins]
-                             , gamma=0.98, ins=params.ins, K=5, num_patients=15)
+                             , gamma=0.98, ins=params.ins, K=params.K, num_patients=params.num_patients)
     qiter.updatePlan("_10k_30patients")
 
 
@@ -35,17 +34,20 @@ if __name__ == '__main__':
 
     args.ins = 20
     args.episode_length = 200
-    args.state_importance = "second"  # worst, second
     args.epsilon_greedy = 0
+    args.K = 5
+    args.num_patients = 15
+
+    args.state_importance = "second"  # worst, second
     # args.n_episodes = 1
     args.trajectory_importance = "single_state"
     args.summary_traj_budget = 5
     args.context_length = 2 * args.summary_traj_budget
     args.minimum_gap = 5
 
-    # train_agents(args)
+    train_agents(args)
 
-    main(args)
+    # main(args)
     print("Done")
 
     # with open('buffer', 'wb') as f:
