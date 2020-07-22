@@ -9,7 +9,6 @@ def create_highlights(args):
     """ create highlights"""
 
     """Load/Get Traces"""
-
     episode = get_episodes(args)
 
     """Predictions to q_values"""

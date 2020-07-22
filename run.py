@@ -28,6 +28,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
 
+    args.agent1 = 'hiv_fittedQ/extra_tree_gamma_ins20.pkl'
+    args.agent2 = 'hiv_fittedQ/extra_tree_gamma_ins20.pkl'
     hiv_params = 'hiv_simulator/hiv_preset_hidden_params'
     with open(hiv_params, 'rb') as f:
         args.preset_hidden_params = pickle.load(f, encoding='latin1')
@@ -49,6 +51,3 @@ if __name__ == '__main__':
 
     # main(args)
     print("Done")
-
-    # with open('buffer', 'wb') as f:
-    #     pickle.dump(ep, f)
