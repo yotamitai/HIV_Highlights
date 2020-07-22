@@ -27,7 +27,9 @@ def main(params):
 if __name__ == '__main__':
     """Paramteres"""
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train', help='Training an agent', type=bool, default=False)
+    parser.add_argument('-train', help='Training an agent', type=bool, default=False)
+    parser.add_argument('-K', help='Training Iterations', type=int, default=10)
+    parser.add_argument('-num_patients', help='number of patients to train on', type=int, default=30)
     args = parser.parse_args()
 
     args.agent1_path = 'agents/extra_tree_gamma_ins20_K10_patients30.pkl'
@@ -39,8 +41,8 @@ if __name__ == '__main__':
     args.ins = 20
     args.episode_length = 200
     args.epsilon_greedy = 0
-    args.K = 5
-    args.num_patients = 15
+    # args.K = 5
+    # args.num_patients = 15
 
     args.state_importance = "second"  # worst, second
     # args.n_episodes = 1
