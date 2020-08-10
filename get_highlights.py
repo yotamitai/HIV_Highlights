@@ -5,6 +5,10 @@ from get_episodes import get_episodes
 from highlights.highlights_state_selection import compute_states_importance
 
 
+def predictions_to_qval(predictions):
+    """ratio"""
+    return [x / sum(predictions) for x in predictions]
+
 def create_highlights(args):
     """ create highlights"""
 
@@ -12,7 +16,7 @@ def create_highlights(args):
     episode = get_episodes(args)
 
     """Predictions to q_values"""
-    # q_values = [pred_2_qval(x) for x in episode.predictions]
+    probabitlities = [predictions_to_qval(x) for x in episode.predictions]
     q_values = episode.predictions
 
     """HIGHLIGHTS"""

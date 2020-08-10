@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.ensemble import ExtraTreesRegressor
 from hiv_simulator.hiv import HIVTreatment as model
 import joblib
-from utils import Episode
+from utils import Episode, Disagreement
 
 
 class FittedQIteration():
@@ -51,7 +51,7 @@ class FittedQIteration():
         action_list = []
         ep_reward = 0
         while not self.task.is_done(episode_length=episode_len):
-            action, predictions = self.policy(state, eps)
+            action, predictions, disagreement = self.policy(state, eps)
             action_list.append(action)
             reward, next_state = self.task.perform_action(action, perturb_params=True, **self.preset_params)
             if not track:
@@ -59,6 +59,7 @@ class FittedQIteration():
             else:
                 episode.rewards.append(reward), episode.actions.append(action), episode.states.append(state),
                 episode.next_states.append(next_state), episode.predictions.append(predictions)
+                if disagreement: episode.disagreements.append(disagreement)
                 ep_list.append(np.array([state, self.encode_action(action), reward, next_state, self.ins]))
             state = next_state
             ep_reward += (reward * self.gamma ** self.task.t)
@@ -89,22 +90,24 @@ class FittedQIteration():
         return a random action.
         """
         if np.random.rand(1) < eps:
-            return np.random.randint(0, self.num_actions), "rand"
+            return np.random.randint(0, self.num_actions), "rand", None
         else:
             prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
             action = prediction.argmax()
+            conflict = None
             if not self.train:
                 """critic"""
                 critic_prediction = self.tree.predict([np.hstack([state, a]) for a in range(self.num_actions)])
                 critic_action = critic_prediction.argmax()
-                conflict = (action != critic_action)
+                if action != critic_action:
+                    conflict = Disagreement(state)
 
-            return action, prediction  #, conflict
+            return action, prediction, conflict
 
     def updatePlan(self, name):
         for k in range(self.K):
             print(f'Iteration: {k}')
-            self.tmp = []
+            self.tmp = []  # saves all samples seen
             for i in range(self.num_patients):
                 self.run_episode(eps=self.eps)
             print(f'Initial Run: Completed')

@@ -6,6 +6,7 @@ class Episode(object):
         self.rewards = []
         self.next_states = []
         self.predictions = []
+        self.disagreements = []
 
 class Disagreement(object):
     def __init__(self, state):

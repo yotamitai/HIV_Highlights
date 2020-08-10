@@ -1,14 +1,7 @@
 import argparse
 import pickle
-
 from fittedQiter_local import FittedQIteration
 from get_highlights import create_highlights
-
-
-def pred_2_qval(predictions):
-    """ratio"""
-    denominator = sum(predictions)
-    return [x / denominator for x in predictions]
 
 
 def train_agents(params):
